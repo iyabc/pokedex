@@ -107,7 +107,7 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: black;
   background: rgb(238, 238, 238);
   font-family: "Inter", sans-serif;
 }

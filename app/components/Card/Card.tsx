@@ -3,7 +3,7 @@ import styles from "./Card.module.css";
 import Pill from "../Pill/Pill";
 import Image from "next/image";
 
-const Card = ({ pokemon, id }: { pokemon: Pokemon; id: string }) => {
+const Card = ({ pokemon, id }: { pokemon: BasicPokemon; id: string }) => {
   return (
     <div className={styles["card"]}>
       <div className={styles["img-wrapper"]}>
@@ -22,8 +22,10 @@ const Card = ({ pokemon, id }: { pokemon: Pokemon; id: string }) => {
       </div>
       <h1 className={styles["card-title"]}>{pokemon.name}</h1>
       <div className={styles["card-types-container"]}>
-        {pokemon.details.types?.map((type: Type) => {
-          return <Pill key={type.slot} type={type.type.name} />;
+        {pokemon.types?.map((type: Type) => {
+          return (
+            <Pill key={type.type.name} text={type.type.name} isType={true} />
+          );
         })}
       </div>
     </div>

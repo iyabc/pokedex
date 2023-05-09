@@ -1,6 +1,8 @@
 .pill {
   width: fit-content;
   padding: 0.2rem 1rem;
+  border-radius: 1rem;
+  border: 0.1rem dashed rgb(43, 43, 43);
 }
 
 .pill--normal {

@@ -10,9 +10,11 @@ const getAllPokemons = async () => {
   }
 };
 
-const getPokemonDetails = async (url: string) => {
+const getPokemonDetailsByName = async (name: string) => {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${name}`
+    );
     // console.log(response.data);
     return response.data;
   } catch (error) {
@@ -20,4 +22,4 @@ const getPokemonDetails = async (url: string) => {
   }
 };
 
-export { getAllPokemons, getPokemonDetails };
+export { getAllPokemons, getPokemonDetailsByName };

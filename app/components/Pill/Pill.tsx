@@ -1,10 +1,12 @@
 import React from "react";
 import styles from "./Pill.module.css";
 
-const Pill = ({ type }: { type: string }) => {
+const Pill = ({ text, isType }: { text: string; isType: boolean }) => {
   return (
-    <div className={[styles["pill"], styles[`pill--${type}`]].join(" ")}>
-      {type}
+    <div
+      className={[styles["pill"], isType && styles[`pill--${text}`]].join(" ")}
+    >
+      {text}
     </div>
   );
 };

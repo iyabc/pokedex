@@ -2,30 +2,25 @@
 import { Inter } from "next/font/google";
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
-import { getAllPokemons, getPokemonDetails } from "./api/pokedex";
+import { getAllPokemons, getPokemonDetailsByName } from "./api/pokedex";
 import Card from "./components/Card/Card";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [pokemons, setPokemons] = useState<Pokemon[]>();
+  const [pokemons, setPokemons] = useState<BasicPokemon[]>();
 
   useEffect(() => {
     getAllPokemons()
       .then(async (result) => {
         const pokemonsWithDetails = await Promise.all(
-          result.map(async (pokemon: Pokemon) => {
-            const details = await getPokemonDetails(pokemon.url);
-
+          result.map(async (pokemon: BasicPokemon) => {
+            const details = await getPokemonDetailsByName(pokemon.name);
             return {
-              name: pokemon.name,
-              url: pokemon.url,
+              name: details.name,
               id: details.id,
-              details: {
-                abilities: details.abilities,
-                types: details.types,
-              },
+              types: details.types,
             };
           })
         );
@@ -42,8 +37,9 @@ export default function Home() {
       {pokemons &&
         pokemons.map((pokemon) => {
           const id = `00${pokemon.id}`.slice(-3);
+
           return (
-            <Link key={pokemon.name} href={`/pokemon/${id}`}>
+            <Link key={pokemon.id} href={`/pokemon/${pokemon.name}`}>
               <Card pokemon={pokemon} id={id} />
             </Link>
           );
