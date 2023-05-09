@@ -28,7 +28,55 @@ export default function Home() {
   const [firstAbility, setFirstAbility] = useState<string>("stench");
   const [secondAbility, setSecondAbility] = useState<string>("");
 
-  const [cardState, setCardState] = useState("view");
+  const [editedName, setNewEditedName] = useState<string>("");
+
+  const [firstEditedType, setFirstEditedType] = useState<string>("");
+  const [secondEditedType, setSecondEditedType] = useState<string>("");
+  const [thirdEditedType, setThirdEditedType] = useState<string>("");
+
+  const handleNewNameOnChange = (e: any) => {
+    setNewName(e.target.value);
+  };
+
+  const handleNewTypesOnChange = (e: any) => {
+    if (e.target.name == "first-type") {
+      setFirstType(e.target.value);
+    } else if (e.target.name == "second-type") {
+      setSecondType(e.target.value);
+    } else if (e.target.name == "third-type") {
+      setThirdType(e.target.value);
+    }
+  };
+
+  const handleNewAbilitiesOnChange = (e: any) => {
+    if (e.target.name == "first-ability") {
+      setFirstAbility(e.target.value);
+    } else if (e.target.name == "second-ability") {
+      setSecondAbility(e.target.value);
+    }
+  };
+
+  const handleDeletOnClick = (pokemonToDelete: any) => {
+    const newPokemons = pokemons.filter(
+      (pokemon) => pokemon !== pokemonToDelete
+    );
+    setPokemons(newPokemons);
+  };
+
+  const handleEditedNameOnChange = (pokemonToEditName: string) => {
+    setNewEditedName(pokemonToEditName);
+    console.log(pokemonToEditName);
+  };
+
+  const handleEditedTypesOnChange = (e: any) => {
+    if (e.target.name == "first-type") {
+      setFirstEditedType(e.target.value);
+    } else if (e.target.name == "second-type") {
+      setSecondEditedType(e.target.value);
+    } else if (e.target.name == "third-type") {
+      setThirdEditedType(e.target.value);
+    }
+  };
 
   const handleSubmitAdd = (e: any) => {
     e.preventDefault();
@@ -62,37 +110,65 @@ export default function Home() {
     }
   };
 
-  const handleNameChange = (e: any) => {
-    setNewName(e.target.value);
-  };
-
-  const handleTypeschange = (e: any) => {
-    if (e.target.name == "first-type") {
-      setFirstType(e.target.value);
-    } else if (e.target.name == "second-type") {
-      setSecondType(e.target.value);
-    } else if (e.target.name == "third-type") {
-      setThirdType(e.target.value);
+  const handleEditSubmitOnClick = (pokemon: BasicPokemon) => {
+    if (editedName === "" && pokemon.name === "") {
+      alert("Name your Pokémon!");
+      return;
     }
-  };
 
-  const handleAbilitieschange = (e: any) => {
-    if (e.target.name == "first-ability") {
-      setFirstAbility(e.target.value);
-    } else if (e.target.name == "second-ability") {
-      setSecondAbility(e.target.value);
+    if (pokemons.some((pokemon) => pokemon.name === editedName)) {
+      alert("That Pokémon already exists!");
+      return;
     }
-  };
 
-  const handleDeletOnClick = (pokemonToDelete: any) => {
-    const newPokemons = pokemons.filter(
-      (pokemon) => pokemon !== pokemonToDelete
-    );
-    setPokemons(newPokemons);
-  };
-
-  const handleEditOnClick = () => {
-    setCardState("edit");
+    try {
+      const editedPokemon = {
+        id: pokemon.id,
+        name: editedName !== "" ? editedName : pokemon.name,
+        types: [
+          {
+            type: {
+              name: firstEditedType
+                ? firstEditedType
+                : pokemon.types[0]?.type.name
+                ? pokemon.types[0]?.type.name
+                : "none",
+            },
+          },
+          {
+            type: {
+              name: secondEditedType
+                ? secondEditedType
+                : pokemon.types[1]?.type.name
+                ? pokemon.types[1]?.type.name
+                : "none",
+            },
+          },
+          {
+            type: {
+              name: thirdEditedType
+                ? thirdEditedType
+                : pokemon.types[2]?.type.name
+                ? pokemon.types[2]?.type.name
+                : "none",
+            },
+          },
+        ],
+      };
+      setPokemons(
+        pokemons.map((pokemon) => {
+          if (pokemon.id == editedPokemon.id) {
+            return editedPokemon;
+          } else {
+            return pokemon;
+          }
+        })
+      );
+    } catch {
+      (error: any) => {
+        console.log(error);
+      };
+    }
   };
 
   useEffect(() => {
@@ -147,7 +223,7 @@ export default function Home() {
                 name="name"
                 id="name"
                 type="text"
-                onChange={handleNameChange}
+                onChange={handleNewNameOnChange}
               />
             </div>
             <div className={styles["form-group"]}>
@@ -155,7 +231,7 @@ export default function Home() {
               <select
                 name="first-ability"
                 id="first-ability"
-                onChange={handleAbilitieschange}
+                onChange={handleNewAbilitiesOnChange}
               >
                 {allAbilities.map((ability: any) => (
                   <option
@@ -170,7 +246,7 @@ export default function Home() {
               <select
                 name="second-ability"
                 id="second-ability"
-                onChange={handleAbilitieschange}
+                onChange={handleNewAbilitiesOnChange}
               >
                 {allAbilities.map((ability: any) => (
                   <option
@@ -189,7 +265,7 @@ export default function Home() {
               <select
                 name="first-type"
                 id="first-type"
-                onChange={handleTypeschange}
+                onChange={handleNewTypesOnChange}
               >
                 {allTypes.map((type: any) => (
                   <option
@@ -206,7 +282,7 @@ export default function Home() {
               <select
                 name="second-type"
                 id="second-type"
-                onChange={handleTypeschange}
+                onChange={handleNewTypesOnChange}
               >
                 {allTypes.map((type: any) => (
                   <option
@@ -224,7 +300,7 @@ export default function Home() {
               <select
                 name="third-type"
                 id="third-type"
-                onChange={handleTypeschange}
+                onChange={handleNewTypesOnChange}
               >
                 {allTypes.map((type: any) => (
                   <option
@@ -246,15 +322,20 @@ export default function Home() {
       <main className={styles["main"]}>
         {pokemons?.map((pokemon) => {
           const id = `00${pokemon.id}`.slice(-3);
-
           return (
             <Card
               key={pokemon.id}
               pokemon={pokemon}
               id={id}
+              allTypes={allTypes}
+              allAbilities={allAbilities}
               handleDelete={() => handleDeletOnClick(pokemon)}
-              handleEdit={handleEditOnClick}
-              cardState={cardState}
+              handleEditNameChange={handleEditedNameOnChange}
+              handleEditedTypesChange={handleEditedTypesOnChange}
+              firstEditedType={firstEditedType}
+              secondEditedType={secondEditedType}
+              thirdEditedType={thirdEditedType}
+              handleEdit={handleEditSubmitOnClick}
             />
           );
         })}
