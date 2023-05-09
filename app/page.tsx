@@ -28,6 +28,8 @@ export default function Home() {
   const [firstAbility, setFirstAbility] = useState<string>("stench");
   const [secondAbility, setSecondAbility] = useState<string>("");
 
+  const [cardState, setCardState] = useState("view");
+
   const handleSubmitAdd = (e: any) => {
     e.preventDefault();
 
@@ -80,6 +82,17 @@ export default function Home() {
     } else if (e.target.name == "second-ability") {
       setSecondAbility(e.target.value);
     }
+  };
+
+  const handleDeletOnClick = (pokemonToDelete: any) => {
+    const newPokemons = pokemons.filter(
+      (pokemon) => pokemon !== pokemonToDelete
+    );
+    setPokemons(newPokemons);
+  };
+
+  const handleEditOnClick = () => {
+    setCardState("edit");
   };
 
   useEffect(() => {
@@ -235,9 +248,14 @@ export default function Home() {
           const id = `00${pokemon.id}`.slice(-3);
 
           return (
-            <Link key={pokemon.id} href={`/pokemon/${pokemon.name}`}>
-              <Card pokemon={pokemon} id={id} />
-            </Link>
+            <Card
+              key={pokemon.id}
+              pokemon={pokemon}
+              id={id}
+              handleDelete={() => handleDeletOnClick(pokemon)}
+              handleEdit={handleEditOnClick}
+              cardState={cardState}
+            />
           );
         })}
       </main>
