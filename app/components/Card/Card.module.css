@@ -1,6 +1,7 @@
 .card {
   background-color: white;
-  width: fit-content;
+  width: 16rem;
+  height: 20rem;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -19,6 +20,8 @@
 .card-title {
   color: black;
   text-align: center;
+  padding: 0.3rem 0;
+  text-transform: capitalize;
 }
 
 .card-types-container {
@@ -28,4 +31,9 @@
   gap: 0.4rem;
   justify-content: center;
   align-items: center;
+}
+
+.img-wrapper {
+  display: flex;
+  justify-content: center;
 }

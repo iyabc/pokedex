@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Navbar.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import CircleButton from "../Buttons/CircleButton/CircleButton";
 
 const Navbar = () => {
   return (
@@ -22,7 +23,11 @@ const Navbar = () => {
           />
         </Link>
       </nav>
-      <div className={styles["overflow"]}></div>
+      <div className={styles["overflow-center"]}>
+        {/* <Link href="/add">
+          <CircleButton text="+" color="green" handleOnCLick="" />
+        </Link> */}
+      </div>
     </>
   );
 };

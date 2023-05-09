@@ -109,3 +109,15 @@
   background: none;
   border: none;
 }
+
+.input-pill {
+  padding: 0.2rem 1rem;
+  border-radius: 1rem;
+  border: 0.1rem dashed rgb(43, 43, 43);
+}
+
+.form-group {
+  padding: 1rem 0;
+  display: flex;
+  gap: 0.4rem;
+}

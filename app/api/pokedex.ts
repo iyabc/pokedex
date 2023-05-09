@@ -22,4 +22,27 @@ const getPokemonDetailsByName = async (name: string) => {
   }
 };
 
-export { getAllPokemons, getPokemonDetailsByName };
+const getAllPokemonTypes = async () => {
+  try {
+    const response = await axios.get("https://pokeapi.co/api/v2/type");
+    return response.data.results;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getAllPokemonAbilities = async () => {
+  try {
+    const response = await axios.get("https://pokeapi.co/api/v2/ability");
+    return response.data.results;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  getAllPokemons,
+  getPokemonDetailsByName,
+  getAllPokemonTypes,
+  getAllPokemonAbilities,
+};

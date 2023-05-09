@@ -23,9 +23,11 @@ const Card = ({ pokemon, id }: { pokemon: BasicPokemon; id: string }) => {
       <h1 className={styles["card-title"]}>{pokemon.name}</h1>
       <div className={styles["card-types-container"]}>
         {pokemon.types?.map((type: Type) => {
-          return (
-            <Pill key={type.type.name} text={type.type.name} isType={true} />
-          );
+          if (type.type.name) {
+            return (
+              <Pill key={type.type.name} text={type.type.name} isType={true} />
+            );
+          }
         })}
       </div>
     </div>

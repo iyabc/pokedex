@@ -1,0 +1,22 @@
+.circle-btn {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  border-radius: 100%;
+  padding: 0.5rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-btn--green {
+  background-color: green;
+}
+
+.circle-btn--red {
+  background-color: red;
+}
+
+.circle-btn:hover {
+  cursor: pointer;
+}

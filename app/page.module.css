@@ -200,6 +200,38 @@
   }
 }
 
+.add-form-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.add-form {
+  width: fit-content;
+  border-radius: 0.4rem;
+  color: white;
+}
+
+.add-form__header {
+  text-align: center;
+  background-color: var(--primary-yellow-color);
+  padding: 1rem;
+  color: black;
+}
+
+.add-form__body {
+  background-color: var(--primary-blue-color);
+  padding: 1rem;
+}
+
+.form-group {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.4rem 0;
+}
+
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {

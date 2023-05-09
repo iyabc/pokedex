@@ -2,11 +2,16 @@
 import Image from "next/image";
 import styles from "../page.module.css";
 import { useEffect, useState } from "react";
-import { getPokemonDetailsByName } from "@/app/api/pokedex";
+import { getAllPokemonTypes, getPokemonDetailsByName } from "@/app/api/pokedex";
 import Pill from "@/app/components/Pill/Pill";
 import Link from "next/link";
+import CircleButton from "@/app/components/Buttons/CircleButton/CircleButton";
+import MainButton from "@/app/components/Buttons/MainButton/MainButton";
+import { useRouter } from "next/navigation";
 
 const Page = ({ params }: { params: { name: string } }) => {
+  const router = useRouter();
+
   const [pokemon, setPokemon] = useState<DetailedPokemon>({
     id: 0,
     name: "",
@@ -19,17 +24,30 @@ const Page = ({ params }: { params: { name: string } }) => {
     },
   });
   const [id, setId] = useState<string>("");
+  const [allTypes, setAllTypes] = useState<Object[]>([]);
+
+  const [newName, setNewName] = useState<string>("");
+  const [newTypes, setNewTypes] = useState<Type[]>([
+    {
+      type: {
+        name: "",
+      },
+    },
+  ]);
+  const [newAbilities, setNewAbilities] = useState<Ability[]>([
+    {
+      ability: {
+        name: "",
+      },
+    },
+  ]);
+
+  useEffect(() => {
+    getAllPokemonTypes().then((result) => setAllTypes(result));
+  }, []);
 
   useEffect(() => {
     getPokemonDetailsByName(params.name).then((result) => {
-      const firstMoves = result.moves?.filter((move: any) => {
-        return move.version_group_details.map((item: any) => {
-          return (
-            item.level_learned_at === 0 &&
-            item.version_group.name === "red-blue"
-          );
-        });
-      });
       setPokemon({
         id: result.id,
         name: result.name,
@@ -45,6 +63,62 @@ const Page = ({ params }: { params: { name: string } }) => {
     });
   }, [params.name]);
 
+  const handleNameOnChange = (e: any) => {
+    setNewName(e.target.value);
+  };
+
+  const handleTypeOnChange = (e: any) => {
+    setNewTypes([
+      ...newTypes,
+      {
+        type: {
+          name: e.target.value,
+        },
+      },
+    ]);
+  };
+
+  const handleAbilityOnChange = (e: any) => {
+    setNewAbilities([
+      ...newAbilities,
+      {
+        ability: {
+          name: e.target.value,
+        },
+      },
+    ]);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    try {
+      const updatedPokemon = {
+        id: pokemon.id,
+        name: newName ? newName : pokemon.name,
+        details: {
+          weight: pokemon.details.weight,
+          height: pokemon.details.height,
+          types: newTypes ? newTypes : pokemon.details.types,
+          abilities: newAbilities ? newAbilities : pokemon.details.abilities,
+          stats: [],
+        },
+      };
+      setPokemon(updatedPokemon);
+    } catch {
+      (error: any) => console.log(error);
+    }
+  };
+
+  const logNewPokemon = () => {
+    console.log(pokemon);
+    // router.push(`/pokemon/${pokemon.name}`);
+  };
+
+  useEffect(() => {
+    logNewPokemon();
+  }, [pokemon]);
+
   return (
     <div
       className={[
@@ -56,26 +130,11 @@ const Page = ({ params }: { params: { name: string } }) => {
       <div
         className={[styles["container__header"], styles["d-flex"]].join(" ")}
       >
-        <Link href="/" className={styles["back-arrow"]}>
-          &larr;
-        </Link>
         <Link
-          className={styles["edit_icon-wrapper"]}
-          href={`/pokemon/${pokemon.name}/edit`}
+          href={`/pokemon/${pokemon.name}`}
+          className={styles["back-arrow"]}
         >
-          <Image
-            className={styles["edit_icon"]}
-            src="/icons/edit_icon.svg"
-            alt="Edit Icon"
-            width={24}
-            height={24}
-            priority={true}
-            loading="eager"
-            draggable={false}
-            {...{
-              layout: "intrinsic",
-            }}
-          />
+          &larr;
         </Link>
       </div>
       <div className={styles["container__inner"]}>
@@ -95,35 +154,60 @@ const Page = ({ params }: { params: { name: string } }) => {
             />
           </div>
           <div>
-            <h1 className={styles["container__title"]}>{pokemon.name}</h1>
+            <h1 className={styles["container__title"]}>
+              <input
+                defaultValue={pokemon.name}
+                onChange={handleNameOnChange}
+              />
+            </h1>
           </div>
         </div>
-        <div className={styles["boxes-container"]}>
+        <form className={styles["boxes-container"]} onSubmit={handleSubmit}>
           <div className={styles["box"]}>
             <h4>Types</h4>
-            <ul className={styles["container__list"]}>
+            {/* <CircleButton
+              text="+"
+              color="green"
+              handleOnCLick={handleAddClick}
+            /> */}
+            <div className={styles["form-group"]}>
               {pokemon.details.types?.map((type: Type) => {
                 return (
-                  <li key={type.type.name}>
-                    <Pill
-                      key={type.type.name}
-                      text={type.type.name}
-                      isType={true}
-                    />
-                  </li>
+                  <select
+                    key={type.type.name}
+                    name="types"
+                    id="types"
+                    defaultValue={type.type.name}
+                    onChange={handleTypeOnChange}
+                  >
+                    {allTypes?.map((type: any) => (
+                      <option key={type.name}>{type.name}</option>
+                    ))}
+                  </select>
                 );
               })}
-            </ul>
+              {/* {
+                <select name="types" id="types">
+                  {allTypes.map((type: any) => (
+                    <option key={type.name}>{type.name}</option>
+                  ))}
+                </select>
+              } */}
+            </div>
           </div>
           <div className={styles["box"]}>
             <h4>Abilities</h4>
-            <ul className={styles["container__list"]}>
+            <div className={styles["form-group"]}>
               {pokemon.details.abilities?.map((abilitiy: Ability) => (
-                <li key={abilitiy.ability.name}>
-                  <Pill text={abilitiy.ability.name} isType={false} />
-                </li>
+                <input
+                  className={styles["input-pill"]}
+                  key={abilitiy.ability.name}
+                  defaultValue={abilitiy.ability.name}
+                  onChange={handleAbilityOnChange}
+                  type="text"
+                />
               ))}
-            </ul>
+            </div>
           </div>
           <div>
             <div className={[styles["box"], styles["box--colored"]].join(" ")}>
@@ -151,7 +235,8 @@ const Page = ({ params }: { params: { name: string } }) => {
             </div>
             <div className={styles["overflow--half"]}></div>
           </div>
-        </div>
+          <MainButton text="Submit" handleClick={handleSubmit} />
+        </form>
       </div>
     </div>
   );
