@@ -1,0 +1,76 @@
+.pill {
+  width: fit-content;
+  padding: 0.2rem 1rem;
+}
+
+.pill--normal {
+  background-color: var(--normal-type-color);
+}
+
+.pill--fire {
+  background-color: var(--fire-type-color);
+}
+
+.pill--water {
+  background-color: var(--water-type-color);
+}
+
+.pill--grass {
+  background-color: var(--grass-type-color);
+}
+
+.pill--electric {
+  background-color: var(--electric-type-color);
+}
+
+.pill--ice {
+  background-color: var(--ice-type-color);
+}
+
+.pill--fighting {
+  background-color: var(--fighting-type-color);
+}
+
+.pill--poison {
+  background-color: var(--poison-type-color);
+}
+
+.pill--ground {
+  background-color: var(--ground-type-color);
+}
+
+.pill--flying {
+  background-color: var(--flying-type-color);
+}
+
+.pill--psychic {
+  background-color: var(--psychic-type-color);
+}
+
+.pill--bug {
+  background-color: var(--bug-type-color);
+}
+
+.pill--rock {
+  background-color: var(--rock-type-color);
+}
+
+.pill--ghost {
+  background-color: var(--ghost-type-color);
+}
+
+.pill--dark {
+  background-color: var(--dark-type-color);
+}
+
+.pill--dragon {
+  background-color: var(--dragon-type-color);
+}
+
+.pill--steel {
+  background-color: var(--steel-type-color);
+}
+
+.pill--fairy {
+  background-color: var(--fairy-type-color);
+}

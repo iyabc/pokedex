@@ -1,0 +1,23 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-red-color);
+  position: sticky;
+  padding: 0.5rem 2rem;
+}
+
+.search-bar {
+  height: 2rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.overflow {
+  background-color: var(--primary-red-color);
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+  width: 15rem;
+  height: 1rem;
+  margin: 0 auto;
+}

@@ -1,0 +1,31 @@
+.card {
+  background-color: white;
+  width: fit-content;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: 0.6rem solid var(--primary-yellow-color);
+  border-radius: 1rem;
+  transition: 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+.card-title {
+  color: black;
+  text-align: center;
+}
+
+.card-types-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
