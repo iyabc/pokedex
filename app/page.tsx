@@ -211,6 +211,9 @@ export default function Home() {
           </div>
           <div className={styles["add-form__body"]}>
             <div className={styles["form-group"]}>
+              <input type="file" id="photo" name="photo" accept="*.png" />
+            </div>
+            <div className={styles["form-group"]}>
               <label htmlFor="name">
                 <h4>Name</h4>
               </label>
