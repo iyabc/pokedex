@@ -7,7 +7,7 @@ const MainButton = ({
   text: string;
   handleClick: Function;
 }) => {
-  return <button onclick={() => handleClick}>{text}</button>;
+  return <button onClick={() => handleClick}>{text}</button>;
 };
 
 export default MainButton;
