@@ -51,7 +51,7 @@ const Page = ({ params }: { params: { name: string } }) => {
         <Link href="/" className={styles["back-arrow"]}>
           &larr;
         </Link>
-        <Link
+        {/* <Link
           className={styles["edit_icon-wrapper"]}
           href={`/pokemon/${pokemon.name}/edit`}
         >
@@ -68,7 +68,7 @@ const Page = ({ params }: { params: { name: string } }) => {
               layout: "intrinsic",
             }}
           />
-        </Link>
+        </Link> */}
       </div>
       <div className={styles["container__inner"]}>
         <div className={styles["container__inner-header"]}>

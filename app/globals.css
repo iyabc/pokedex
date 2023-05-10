@@ -20,6 +20,8 @@
   --dragon-type-color: #7038f8;
   --steel-type-color: #b8b8d0;
   --fairy-type-color: #f0b6bc;
+  --unknown-type-color: #6aa596;
+  --shadow-type-color: #705898;
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",

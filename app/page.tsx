@@ -11,6 +11,7 @@ import {
 import Card from "./components/Card/Card";
 import Link from "next/link";
 import CircleButton from "./components/Buttons/CircleButton/CircleButton";
+import { types } from "util";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,6 @@ export default function Home() {
 
   const [firstType, setFirstType] = useState<string>("normal");
   const [secondType, setSecondType] = useState<string>("");
-  const [thirdType, setThirdType] = useState<string>("");
 
   const [firstAbility, setFirstAbility] = useState<string>("stench");
   const [secondAbility, setSecondAbility] = useState<string>("");
@@ -32,7 +32,6 @@ export default function Home() {
 
   const [firstEditedType, setFirstEditedType] = useState<string>("");
   const [secondEditedType, setSecondEditedType] = useState<string>("");
-  const [thirdEditedType, setThirdEditedType] = useState<string>("");
 
   const handleNewNameOnChange = (e: any) => {
     setNewName(e.target.value);
@@ -43,8 +42,6 @@ export default function Home() {
       setFirstType(e.target.value);
     } else if (e.target.name == "second-type") {
       setSecondType(e.target.value);
-    } else if (e.target.name == "third-type") {
-      setThirdType(e.target.value);
     }
   };
 
@@ -69,44 +66,45 @@ export default function Home() {
   };
 
   const handleEditedTypesOnChange = (e: any) => {
+    console.log(e.target.value);
     if (e.target.name == "first-type") {
       setFirstEditedType(e.target.value);
     } else if (e.target.name == "second-type") {
       setSecondEditedType(e.target.value);
-    } else if (e.target.name == "third-type") {
-      setThirdEditedType(e.target.value);
     }
   };
 
   const handleSubmitAdd = (e: any) => {
     e.preventDefault();
 
-    if (newName !== "") {
-      if (pokemons.some((pokemon) => pokemon.name === newName)) {
-        alert("That Pokémon already exists!");
-        return;
-      }
-
-      try {
-        const lastPokemonId = pokemons.sort((a, b) => b.id - a.id)[0]?.id;
-
-        const newPokemon = {
-          id: lastPokemonId + 1,
-          name: newName,
-          types: [
-            { type: { name: firstType && firstType } },
-            { type: { name: secondType && secondType } },
-            { type: { name: thirdType && thirdType } },
-          ],
-        };
-        setPokemons([...pokemons, newPokemon]);
-      } catch {
-        (error: any) => {
-          console.log(error);
-        };
-      }
-    } else {
+    if (newName === "") {
       alert("Name your Pokémon!");
+      return;
+    }
+
+    if (pokemons.some((pokemon) => pokemon.name === newName)) {
+      alert("That Pokémon already exists!");
+      return;
+    }
+
+    try {
+      const lastPokemonId = [...pokemons].sort((a, b) => b.id - a.id)[0]?.id;
+
+      const newPokemon = {
+        id: lastPokemonId + 1,
+        name: newName,
+        types: [
+          { type: { name: firstType !== "" ? firstType : "none" } },
+          { type: { name: secondType !== "" ? secondType : "none" } },
+        ],
+      };
+
+      console.log(newPokemon);
+      setPokemons([...pokemons, newPokemon]);
+    } catch {
+      (error: any) => {
+        console.log(error);
+      };
     }
   };
 
@@ -122,39 +120,36 @@ export default function Home() {
     }
 
     try {
+      const typesArray = [firstEditedType, secondEditedType];
+      if (firstEditedType === "") {
+        typesArray[0] = pokemon.types[0].type.name
+          ? pokemon.types[0].type.name
+          : "none";
+      }
+
+      if (secondEditedType === "") {
+        typesArray[1] = pokemon.types[1].type.name
+          ? pokemon.types[1].type.name
+          : "none";
+      }
+
       const editedPokemon = {
         id: pokemon.id,
         name: editedName !== "" ? editedName : pokemon.name,
         types: [
           {
             type: {
-              name: firstEditedType
-                ? firstEditedType
-                : pokemon.types[0]?.type.name
-                ? pokemon.types[0]?.type.name
-                : "none",
+              name: typesArray[0],
             },
           },
           {
             type: {
-              name: secondEditedType
-                ? secondEditedType
-                : pokemon.types[1]?.type.name
-                ? pokemon.types[1]?.type.name
-                : "none",
-            },
-          },
-          {
-            type: {
-              name: thirdEditedType
-                ? thirdEditedType
-                : pokemon.types[2]?.type.name
-                ? pokemon.types[2]?.type.name
-                : "none",
+              name: typesArray[1],
             },
           },
         ],
       };
+      console.log(editedPokemon);
       setPokemons(
         pokemons.map((pokemon) => {
           if (pokemon.id == editedPokemon.id) {
@@ -271,9 +266,7 @@ export default function Home() {
                   <option
                     key={type.name}
                     value={type.name}
-                    disabled={
-                      type.name === secondType || type.name === thirdType
-                    }
+                    disabled={type.name === secondType}
                   >
                     {type.name}
                   </option>
@@ -288,27 +281,7 @@ export default function Home() {
                   <option
                     key={type.name}
                     value={type.name}
-                    disabled={
-                      type.name === firstType || type.name === thirdType
-                    }
-                  >
-                    {type.name}
-                  </option>
-                ))}
-                <option value="">none</option>
-              </select>
-              <select
-                name="third-type"
-                id="third-type"
-                onChange={handleNewTypesOnChange}
-              >
-                {allTypes.map((type: any) => (
-                  <option
-                    key={type.name}
-                    value={type.name}
-                    disabled={
-                      type.name === firstType || type.name === secondType
-                    }
+                    disabled={type.name === firstType}
                   >
                     {type.name}
                   </option>
@@ -334,7 +307,6 @@ export default function Home() {
               handleEditedTypesChange={handleEditedTypesOnChange}
               firstEditedType={firstEditedType}
               secondEditedType={secondEditedType}
-              thirdEditedType={thirdEditedType}
               handleEdit={handleEditSubmitOnClick}
             />
           );

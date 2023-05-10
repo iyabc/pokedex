@@ -14,7 +14,6 @@ const Card = ({
   handleEditedTypesChange,
   firstEditedType,
   secondEditedType,
-  thirdEditedType,
   handleDelete,
   handleEdit,
 }: {
@@ -26,7 +25,6 @@ const Card = ({
   handleEditedTypesChange: any;
   firstEditedType: string;
   secondEditedType: string;
-  thirdEditedType: string;
   handleDelete: any;
   handleEdit: any;
 }) => {
@@ -123,10 +121,7 @@ const Card = ({
                       <option
                         key={type.name}
                         value={type.name}
-                        disabled={
-                          type.name === secondEditedType ||
-                          type.name === thirdEditedType
-                        }
+                        disabled={type.name === secondEditedType}
                       >
                         {type.name}
                       </option>
@@ -146,38 +141,12 @@ const Card = ({
                       <option
                         key={type.name}
                         value={type.name}
-                        disabled={
-                          type.name === firstEditedType ||
-                          type.name === thirdEditedType
-                        }
+                        disabled={type.name === firstEditedType}
                       >
                         {type.name}
                       </option>
                     ))}
-                    <option value="">none</option>
-                  </select>
-                  <select
-                    name="third-type"
-                    id="third-type"
-                    defaultValue={
-                      pokemon.types[2]?.type.name
-                        ? pokemon.types[2]?.type.name
-                        : "normal"
-                    }
-                  >
-                    {allTypes.map((type: any) => (
-                      <option
-                        key={type.name}
-                        value={type.name}
-                        disabled={
-                          type.name === firstEditedType ||
-                          type.name === secondEditedType
-                        }
-                      >
-                        {type.name}
-                      </option>
-                    ))}
-                    <option value="">none</option>
+                    <option value="none">none</option>
                   </select>
                 </div>
               </div>

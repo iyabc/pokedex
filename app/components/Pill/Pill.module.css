@@ -76,3 +76,11 @@
 .pill--fairy {
   background-color: var(--fairy-type-color);
 }
+
+.pill--unknown {
+  background-color: var(--unknown-type-color);
+}
+
+.pill--shadow {
+  background-color: var(--shadow-type-color);
+}
