@@ -1,5 +1,7 @@
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
+
 const loading = () => {
-  return <div>loading...</div>;
+  return <LoadingScreen />;
 };
 
 export default loading;

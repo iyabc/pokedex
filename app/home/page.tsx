@@ -13,11 +13,6 @@ import CircleButton from "../components/Buttons/CircleButton/CircleButton";
 import Link from "next/link";
 import { fetchPokemonPagination } from "../api/api_to_local";
 
-const fetchedLocalPokemonsString = localStorage.getItem("allPokemonsArray");
-const fetchedPokemonsArray = fetchedLocalPokemonsString
-  ? JSON.parse(fetchedLocalPokemonsString)
-  : null;
-
 const Home = () => {
   const [shownPokemons, setShownPokemons] = useState<
     BasicPokemon[] | undefined
@@ -34,13 +29,13 @@ const Home = () => {
     }
   };
 
-  const handleDeletOnClick = (pokemonToDelete: BasicPokemon) => {
-    // const pokemonsAfterDelete = fetchedPokemonsArray.filter(
-    //   (pokemon: BasicPokemon) => pokemon !== pokemonToDelete
-    // );
-    // localStorage.setItem("allPokemonsArray", pokemonsAfterDelete);
-    // console.log(fetchedPokemonsArray);
-  };
+  // const handleDeletOnClick = (pokemonToDelete: BasicPokemon) => {
+  //   const pokemonsAfterDelete = fetchedPokemonsArray.filter(
+  //     (pokemon: BasicPokemon) => pokemon !== pokemonToDelete
+  //   );
+  //   localStorage.setItem("allPokemonsArray", pokemonsAfterDelete);
+  //   console.log(fetchedPokemonsArray);
+  // };
 
   const handleFirstPageButtonOnClick = () => {
     setCurrentPage(1);
@@ -59,6 +54,10 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const fetchedLocalPokemonsString = localStorage.getItem("allPokemonsArray");
+    const fetchedPokemonsArray = fetchedLocalPokemonsString
+      ? JSON.parse(fetchedLocalPokemonsString)
+      : null;
     setMaxPageNumber(Math.ceil(fetchedPokemonsArray?.length / 6));
   }, []);
 
@@ -73,12 +72,13 @@ const Home = () => {
           {shownPokemons?.map((shownPokemon) => {
             const id = `00${shownPokemon.id}`.slice(-3);
             return (
-              <Card
+              <Link
                 key={shownPokemon.id}
-                id={id}
-                pokemon={shownPokemon}
-                handleDelete={() => handleDeletOnClick(shownPokemon)}
-              />
+                className={styles.link}
+                href={`/pokemon/${shownPokemon.name}`}
+              >
+                <Card id={id} pokemon={shownPokemon} />
+              </Link>
             );
           })}
         </div>

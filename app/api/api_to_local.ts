@@ -18,13 +18,21 @@ const fetchAllPokemonsFromApi = async () => {
           details: {
             weight: details?.weight,
             height: details?.height,
-            types: details?.types,
-            abilities: details?.abilities,
-            stats: details?.stats,
+            types: details?.types.map((type: any) => ({
+              name: type.type.name,
+            })) as Type[],
+            abilities: details?.abilities.map((ability: any) => ({
+              name: ability.ability.name,
+            })) as Ability[],
+            stats: details?.stats.map((stat: any) => ({
+              base_stat: stat.base_stat,
+              name: stat.stat.name,
+            })) as Stat[],
           },
         };
       })
     );
+    console.log(pokemonsWithDetails);
     localStorage.setItem(
       "allPokemonsArray",
       JSON.stringify(pokemonsWithDetails)
@@ -43,7 +51,9 @@ const fetchPokemonPagination = async (page: number) => {
         return {
           id: details?.id,
           name: details?.name,
-          types: details?.types.map((type: any) => type.type.name),
+          types: details?.types.map((type: any) => ({
+            name: type.type.name,
+          })) as Type[],
         };
       })
     );
@@ -54,27 +64,4 @@ const fetchPokemonPagination = async (page: number) => {
   }
 };
 
-const fetchAllPokemonTypesFromApi = async () => {
-  try {
-    const result = await getAllPokemonTypes();
-    localStorage.setItem("allPokemonTypesArray", JSON.stringify(result));
-  } catch (error: any) {
-    console.log(error);
-  }
-};
-
-const fetchAllPokemonAbilitiesFromApi = async () => {
-  try {
-    const result = await getAllPokemonAbilities();
-    localStorage.setItem("allPokemonAbilitiesArray", JSON.stringify(result));
-  } catch (error: any) {
-    console.log(error);
-  }
-};
-
-export {
-  fetchAllPokemonsFromApi,
-  fetchPokemonPagination,
-  fetchAllPokemonTypesFromApi,
-  fetchAllPokemonAbilitiesFromApi,
-};
+export { fetchAllPokemonsFromApi, fetchPokemonPagination };
