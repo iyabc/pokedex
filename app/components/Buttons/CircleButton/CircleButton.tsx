@@ -1,24 +1,13 @@
 import styles from "./CircleButton.module.css";
 
-const CircleButton = ({
-  text,
-  color,
-  handleOnCLick,
-}: {
-  text: string;
-  color: string;
-  handleOnCLick: any;
-}) => {
+const AddButton = ({ text, color }: { text: string; color: string }) => {
   return (
     <button
-      className={[styles["circle-btn"], styles[`circle-btn--${color}`]].join(
-        " "
-      )}
-      onClick={handleOnCLick}
+      className={`${styles.circleButton} ${styles[`circleButton--${color}`]}`}
     >
       {text}
     </button>
   );
 };
 
-export default CircleButton;
+export default AddButton;

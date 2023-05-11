@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 5rem;
+  gap: 1rem;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.addButtonContainer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 2rem 3rem;
+}
+
+.paginationButtonContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.add-form-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.add-form {
+  width: fit-content;
+  border-radius: 0.4rem;
+  color: white;
+}
+
+.add-form__header {
+  text-align: center;
+  background-color: var(--primary-yellow-color);
+  padding: 1rem;
+  color: black;
+}
+
+.add-form__body {
+  background-color: var(--primary-blue-color);
+  padding: 1rem;
+}
+
+.form-group {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.4rem 0;
+}
+
+@media screen and (max-width: 570px) {
+  .container {
+    padding: 3rem;
+  }
+  .addButtonContainer {
+    padding: 1.3rem 2rem;
+  }
+}

@@ -19,18 +19,14 @@ type Details = {
 };
 
 type Type = {
-  type: { name: string };
+  name: string;
 };
 
 type Ability = {
-  ability: {
-    name: string;
-  };
+  name: string;
 };
 
 type Stat = {
   base_stat: number;
-  stat: {
-    name: string;
-  };
+  name: string;
 };
