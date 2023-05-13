@@ -1,7 +1,8 @@
 "use client";
 import { ChangeEvent, FormEventHandler, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
-import AddPokemonForm from "../components/Forms/AddPokemonForm/AddPokemonForm";
+import AddPokemonForm from "../../components/Forms/AddPokemonForm/AddPokemonForm";
 import {
   getAllPokemonTypes,
   getAllPokemonAbilities,
@@ -9,6 +10,7 @@ import {
 } from "../api/pokedex";
 
 const Add = () => {
+  const { push } = useRouter();
   const [pokemons, setPokemons] = useState<DetailedPokemon[]>([]);
   const [types, setTypes] = useState<Type[]>([]);
   const [abilities, setAbilities] = useState<Ability[]>([]);
@@ -26,8 +28,33 @@ const Add = () => {
   const [specialAttack, setSpecialAttack] = useState<number>(0.0);
   const [specialDefense, setSpecialDefense] = useState<number>(0.0);
   const [speed, setSpeed] = useState<number>(0.0);
-  const [accuracy, setAccuracy] = useState<number>(0.0);
-  const [evasion, setEvasion] = useState<number>(0.0);
+
+  const handleFetchTypesFromApi = async () => {
+    try {
+      const result = await getAllPokemonTypes();
+      setTypes(result);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleFetchAbilitiesFromApi = async () => {
+    try {
+      const result = await getAllPokemonAbilities();
+      setAbilities(result);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleFetchStatsFromApi = async () => {
+    try {
+      const result = await getAllPokemonStats();
+      setStats(result);
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const handleNameOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -57,8 +84,31 @@ const Add = () => {
     }
   };
 
+  const handleHpOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setHp(Number(e.target.value));
+  };
+
+  const handleAttackOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setAttack(Number(e.target.value));
+  };
+
+  const handleDefenseOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDefense(Number(e.target.value));
+  };
+
+  const handleSpecialAttackOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSpecialAttack(Number(e.target.value));
+  };
+
+  const handleSpecialDefenseOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSpecialDefense(Number(e.target.value));
+  };
+
+  const handleSpeedOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSpeed(Number(e.target.value));
+  };
+
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
     e.preventDefault();
 
     if (name === "") {
@@ -88,38 +138,23 @@ const Add = () => {
             { name: firstType !== "" ? firstType : "none" },
             { name: secondType !== "" ? secondType : "none" },
           ],
-          stats: [{ base_stat: 0, name: "" }],
+          stats: {
+            hp: hp,
+            attack: attack,
+            defense: defense,
+            specialAttack: specialAttack,
+            specialDefense: specialDefense,
+            speed: speed,
+          },
         },
       };
       console.log(newPokemon);
-      // setPokemons([...pokemons, newPokemon]);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const handleFetchTypesFromApi = async () => {
-    try {
-      const result = await getAllPokemonTypes();
-      setTypes(result);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const handleFetchAbilitiesFromApi = async () => {
-    try {
-      const result = await getAllPokemonAbilities();
-      setAbilities(result);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const handleFetchStatsFromApi = async () => {
-    try {
-      const result = await getAllPokemonStats();
-      setStats(result);
+      alert(`Added ${name}`);
+      localStorage.setItem(
+        "allPokemonsArray",
+        JSON.stringify([...pokemons, newPokemon])
+      );
+      push("/");
     } catch (error) {
       throw error;
     }
@@ -141,6 +176,7 @@ const Add = () => {
       <AddPokemonForm
         types={types}
         abilities={abilities}
+        stats={stats}
         name={name}
         weight={weight}
         height={height}
@@ -153,6 +189,12 @@ const Add = () => {
         handleHeightOnChange={handleHeightOnChange}
         handleTypesOnChange={handleTypesOnChange}
         handleAbilitiesOnChange={handleAbilitiesOnChange}
+        handleHpOnChange={handleHpOnChange}
+        handleAttackOnChange={handleAttackOnChange}
+        handleDefenseOnChange={handleDefenseOnChange}
+        handleSpecialAttackOnChange={handleSpecialAttackOnChange}
+        handleSpecialDefenseOnChange={handleSpecialDefenseOnChange}
+        handleSpeedOnChange={handleSpeedOnChange}
         handleOnSubmit={handleOnSubmit}
       />
     </div>

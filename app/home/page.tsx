@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.css";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   getAllPokemonAbilities,
   getAllPokemonTypes,
@@ -8,12 +8,15 @@ import {
   getPokemonDetailsByName,
   getPokemonsByPagination,
 } from "../api/pokedex";
-import Card from "../components/Card/Card";
-import CircleButton from "../components/Buttons/CircleButton/CircleButton";
+import Card from "../../components/Card/Card";
+import CircleButton from "../../components/Buttons/CircleButton/CircleButton";
 import Link from "next/link";
 import { fetchPokemonPagination } from "../api/api_to_local";
 
 const Home = () => {
+  const [pokemonsFromLocal, setPokemonsFromLocal] = useState<BasicPokemon[]>(
+    []
+  );
   const [shownPokemons, setShownPokemons] = useState<
     BasicPokemon[] | undefined
   >([]);
@@ -53,20 +56,42 @@ const Home = () => {
     setCurrentPage(maxPageNumber);
   };
 
-  useEffect(() => {
+  const handleSearchOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value.toLowerCase();
+    const filteredPokemons = pokemonsFromLocal.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(searchValue)
+    );
+    if (filteredPokemons.length > 0) {
+      setShownPokemons(filteredPokemons);
+      setMaxPageNumber(Math.ceil(filteredPokemons?.length / 6));
+    } else {
+      setShownPokemons(pokemonsFromLocal);
+      setMaxPageNumber(Math.ceil(pokemonsFromLocal?.length / 6));
+    }
+  };
+
+  const handleFetchLocalPokemons = () => {
     const fetchedLocalPokemonsString = localStorage.getItem("allPokemonsArray");
     const fetchedPokemonsArray = fetchedLocalPokemonsString
       ? JSON.parse(fetchedLocalPokemonsString)
       : null;
-    setMaxPageNumber(Math.ceil(fetchedPokemonsArray?.length / 6));
+    setPokemonsFromLocal(fetchedPokemonsArray);
+  };
+
+  useEffect(() => {
+    handleFetchLocalPokemons();
+    setMaxPageNumber(Math.ceil(pokemonsFromLocal?.length / 6));
   }, []);
 
   useEffect(() => {
     handlePokemonsPagination();
-  }, [currentPage]);
+  }, [pokemonsFromLocal, currentPage]);
+
+  console.log(pokemonsFromLocal.length);
 
   return (
     <>
+      <input type="text" name="search" onChange={handleSearchOnChange} />
       <main className={styles.container}>
         <div className={styles.cardsContainer}>
           {shownPokemons?.map((shownPokemon) => {

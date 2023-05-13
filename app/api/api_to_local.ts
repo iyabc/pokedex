@@ -12,6 +12,7 @@ const fetchAllPokemonsFromApi = async () => {
     const pokemonsWithDetails = await Promise.all(
       result.map(async (pokemon: DetailedPokemon) => {
         const details = await getPokemonDetailsByName(pokemon.name);
+        // console.log(details);
         return {
           name: details?.name,
           id: details?.id,
@@ -24,15 +25,44 @@ const fetchAllPokemonsFromApi = async () => {
             abilities: details?.abilities.map((ability: any) => ({
               name: ability.ability.name,
             })) as Ability[],
-            stats: details?.stats.map((stat: any) => ({
-              base_stat: stat.base_stat,
-              name: stat.stat.name,
-            })) as Stat[],
+            stats: {
+              hp:
+                details.stats?.find((stat: any) => {
+                  return stat.stat.name === "hp";
+                })?.base_stat || null,
+              attack:
+                details.stats?.find((stat: any) => {
+                  return stat.stat.name === "attack";
+                })?.base_stat || null,
+              defense:
+                details.stats?.find((stat: any) => {
+                  return stat.stat.name === "defense";
+                })?.base_stat || null,
+              specialAttack:
+                details.stats?.find((stat: any) => {
+                  return stat.stat.name === "special-attack";
+                })?.base_stat || null,
+              specialDefense:
+                details.stats?.find((stat: any) => {
+                  return stat.stat.name === "special-defense";
+                })?.base_stat || null,
+              speed:
+                details.stats?.find((stat: any) => {
+                  return stat.stat.name === "speed";
+                })?.base_stat || null,
+              // accuracy:
+              //   details.stats?.find((stat: any) => {
+              //     return stat.stat.name === "accuracy";
+              //   })?.base_stat || null,
+              // evasion:
+              //   details.stats?.find((stat: any) => {
+              //     return stat.stat.name === "evasion";
+              //   })?.base_stat || null,
+            },
           },
         };
       })
     );
-    console.log(pokemonsWithDetails);
     localStorage.setItem(
       "allPokemonsArray",
       JSON.stringify(pokemonsWithDetails)

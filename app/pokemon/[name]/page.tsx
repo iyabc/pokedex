@@ -2,8 +2,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
-import { getPokemonDetailsByName } from "@/app/api/pokedex";
-import Pill from "@/app/components/Pill/Pill";
+import Pill from "@/components/Pill/Pill";
 import Link from "next/link";
 
 const Page = ({ params }: { params: { name: string } }) => {
@@ -15,7 +14,14 @@ const Page = ({ params }: { params: { name: string } }) => {
       height: 0,
       types: [],
       abilities: [],
-      stats: [],
+      stats: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
     },
   });
   const [id, setId] = useState<string>("");
@@ -28,13 +34,14 @@ const Page = ({ params }: { params: { name: string } }) => {
 
     const detailedPokemon = pokemonsArray?.find(
       (pokemon: DetailedPokemon) =>
-        pokemon.name.toLowerCase() === params.name.toLowerCase()
+        pokemon.name.toLowerCase() ===
+        params.name.replace("%20", " ").toLowerCase()
     );
     setPokemon(detailedPokemon);
-    setId(`00${detailedPokemon.id}`.slice(-3));
+    // setId(`00${detailedPokemon?.id}`.slice(-3));
   }, []);
 
-  console.log(pokemon);
+  // console.log(pokemon);
 
   return (
     <div
@@ -54,7 +61,7 @@ const Page = ({ params }: { params: { name: string } }) => {
           className={styles["edit_icon-wrapper"]}
           href={`/pokemon/${pokemon.name}/edit`}
         >
-          <Image
+          {/* <Image
             className={styles["edit_icon"]}
             src="/icons/edit_icon.svg"
             alt="Edit Icon"
@@ -65,13 +72,13 @@ const Page = ({ params }: { params: { name: string } }) => {
             {...{
               layout: "intrinsic",
             }}
-          />
+          /> */}
         </Link>
       </div>
       <div className={styles["container__inner"]}>
         <div className={styles["container__inner-header"]}>
           <div className={styles["img-wrapper"]}>
-            <Image
+            {/* <Image
               src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id}.png`}
               alt={`${pokemon.name}`}
               width={150}
@@ -81,7 +88,7 @@ const Page = ({ params }: { params: { name: string } }) => {
               {...{
                 layout: "intrinsic",
               }}
-            />
+            /> */}
           </div>
           <div>
             <h1 className={styles["container__title"]}>{pokemon.name}</h1>
@@ -92,22 +99,28 @@ const Page = ({ params }: { params: { name: string } }) => {
             <h4>Types</h4>
             <ul className={styles["container__list"]}>
               {pokemon.details.types?.map((type: Type) => {
-                return (
-                  <li key={type.toString()}>
-                    <Pill text={type.name} isType={true} />
-                  </li>
-                );
+                if (type.name !== "none") {
+                  return (
+                    <li key={type.toString()}>
+                      <Pill text={type.name} isType={true} />
+                    </li>
+                  );
+                }
               })}
             </ul>
           </div>
           <div className={styles["box"]}>
             <h4>Abilities</h4>
             <ul className={styles["container__list"]}>
-              {pokemon.details.abilities?.map((abilitiy: Ability) => (
-                <li key={abilitiy.name}>
-                  <Pill text={abilitiy.name} isType={false} />
-                </li>
-              ))}
+              {pokemon.details.abilities?.map((abilitiy: Ability) => {
+                if (abilitiy.name !== "none") {
+                  return (
+                    <li key={abilitiy.name}>
+                      <Pill text={abilitiy.name} isType={false} />
+                    </li>
+                  );
+                }
+              })}
             </ul>
           </div>
           <div>
@@ -121,16 +134,54 @@ const Page = ({ params }: { params: { name: string } }) => {
                     styles["container__list--progress"],
                   ].join(" ")}
                 >
-                  {pokemon.details.stats?.map((stat: Stat) => (
-                    <li key={stat.name}>
-                      <label>{stat.name}</label>
-                      <progress
-                        value={stat.base_stat}
-                        max="100"
-                        title={String(stat.base_stat)}
-                      ></progress>
-                    </li>
-                  ))}
+                  <li>
+                    <label>HP</label>
+                    <progress
+                      value={pokemon.details.stats.hp}
+                      max="100"
+                      title="HP"
+                    ></progress>
+                  </li>
+                  <li>
+                    <label>Attack</label>
+                    <progress
+                      value={pokemon.details.stats.attack}
+                      max="100"
+                      title="Attack"
+                    ></progress>
+                  </li>
+                  <li>
+                    <label>Defense</label>
+                    <progress
+                      value={pokemon.details.stats.defense}
+                      max="100"
+                      title="Defense"
+                    ></progress>
+                  </li>
+                  <li>
+                    <label>Special Attack</label>
+                    <progress
+                      value={pokemon.details.stats.specialAttack}
+                      max="100"
+                      title="Special Attack"
+                    ></progress>
+                  </li>
+                  <li>
+                    <label>Special Defense</label>
+                    <progress
+                      value={pokemon.details.stats.specialDefense}
+                      max="100"
+                      title="Special Defense"
+                    ></progress>
+                  </li>
+                  <li>
+                    <label>Speed</label>
+                    <progress
+                      value={pokemon.details.stats.speed}
+                      max="100"
+                      title="Speed"
+                    ></progress>
+                  </li>
                 </ul>
               </div>
             </div>

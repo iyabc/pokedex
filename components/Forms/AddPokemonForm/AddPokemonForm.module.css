@@ -22,3 +22,13 @@
   gap: 0.4rem;
   margin: 0.4rem 0;
 }
+
+.inputLabel {
+  text-transform: capitalize;
+}
+
+.input input {
+  display: none;
+  padding: 0 1rem;
+  border-radius: 1rem;
+}

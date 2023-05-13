@@ -15,7 +15,7 @@ type Details = {
   height: number;
   types: Type[];
   abilities: Ability[];
-  stats: Stat[];
+  stats: Stats;
 };
 
 type Type = {
@@ -26,7 +26,17 @@ type Ability = {
   name: string;
 };
 
+type Stats = {
+  hp: number;
+  attack: number;
+  defense: number;
+  specialAttack: number;
+  specialDefense: number;
+  speed: number;
+  // accuracy: number;
+  // evasion: number;
+};
+
 type Stat = {
-  base_stat: number;
   name: string;
 };

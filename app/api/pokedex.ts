@@ -56,7 +56,6 @@ const getAllPokemonAbilities = async () => {
 const getAllPokemonStats = async () => {
   try {
     const result = await axios.get(`${apiUrl}stat`);
-    console.log(result);
     return result.data.results;
   } catch (error) {
     throw error;
