@@ -1,4 +1,4 @@
-.d-flex {
+.d_flex {
   display: flex;
 }
 
@@ -10,11 +10,11 @@
   padding: 1rem;
 }
 
-.container--row {
+.container_row {
   flex-direction: row;
 }
 
-.container--column {
+.container_column {
   flex-direction: column;
 }
 
@@ -26,13 +26,14 @@
   text-align: center;
 }
 
-.container__inner-header {
+.container__inner_header {
   flex-direction: column;
   padding: 1rem 0;
 }
 
 .container__title {
   text-transform: capitalize;
+  margin: 2rem 0;
 }
 
 .container__list {
@@ -42,24 +43,23 @@
   list-style-type: none;
   text-transform: capitalize;
   gap: 0.4rem;
-  padding: 1rem 0;
 }
 
-.container__list--row {
+.container__list_row {
   flex-direction: row;
 }
 
-.container__list--column {
+.container__list_column {
   flex-direction: column;
 }
 
-.container__list--progress li {
+.container__list_progress li {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.boxes-container {
+.boxes_container {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -67,57 +67,70 @@
 }
 
 .box {
+  display: flex;
+  flex-direction: column;
   max-width: fit-content;
   text-align: center;
+  margin: 0.5rem 0;
+  gap: 1rem;
 }
 
-.box--colored {
+.box_colored {
   background-color: var(--primary-blue-color);
+  margin: 0;
   border-radius: 1rem 1rem 0 0;
 }
 
-.box__header {
+.box_header {
   background-color: var(--primary-yellow-color);
   border-radius: 1rem 1rem 0 0;
   padding: 1rem 0;
 }
 
-.box__body {
+.box_body {
   border: 1rem 1rem 0 0;
   padding: 0 1rem;
 }
 
-.overflow--half {
+.box_body ul li {
+  display: flex;
+  flex-direction: column;
+}
+
+.overflow_half {
   background-color: var(--primary-blue-color);
   clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
   width: 50%;
   height: 1rem;
 }
 
-.back-arrow {
+.back_arrow {
   font-weight: 900;
   color: black;
   transition: 0.3s ease-in-out;
 }
 
-.back-arrow:hover {
+.back_arrow:hover {
   cursor: pointer;
   color: var(--primary-red-color);
 }
 
-.edit_icon-wrapper {
+.icon_wrapper {
   background: none;
   border: none;
 }
 
-.input-pill {
+.icon {
+  transition: 0.3s ease-in-out;
+}
+
+.icon:hover {
+  cursor: pointer;
+  transform: scale(0.9);
+}
+
+.input_pill {
   padding: 0.2rem 1rem;
   border-radius: 1rem;
   border: 0.1rem dashed rgb(43, 43, 43);
-}
-
-.form-group {
-  padding: 1rem 0;
-  display: flex;
-  gap: 0.4rem;
 }

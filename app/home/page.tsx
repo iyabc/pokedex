@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import {
   getAllPokemonAbilities,
   getAllPokemonTypes,
@@ -14,31 +14,32 @@ import Link from "next/link";
 import { fetchPokemonPagination } from "../api/api_to_local";
 
 const Home = () => {
-  const [pokemonsFromLocal, setPokemonsFromLocal] = useState<BasicPokemon[]>(
+  const [pokemonsFromLocal, setPokemonsFromLocal] = useState<DetailedPokemon[]>(
     []
   );
   const [shownPokemons, setShownPokemons] = useState<
-    BasicPokemon[] | undefined
+    DetailedPokemon[] | undefined
   >([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxPageNumber, setMaxPageNumber] = useState<number>(0);
 
-  const handlePokemonsPagination = async () => {
-    try {
-      const result = await fetchPokemonPagination(currentPage);
-      setShownPokemons(result);
-    } catch (error: any) {
-      console.log(error);
-    }
+  const handlePokemonsPagination = () => {
+    console.log(typeof pokemonsFromLocal);
+    const startIndex = (currentPage - 1) * 6;
+    const endIndex = startIndex + 6;
+    const slicedPokemons = pokemonsFromLocal?.slice(startIndex, endIndex);
+    setShownPokemons(slicedPokemons);
   };
 
-  // const handleDeletOnClick = (pokemonToDelete: BasicPokemon) => {
-  //   const pokemonsAfterDelete = fetchedPokemonsArray.filter(
-  //     (pokemon: BasicPokemon) => pokemon !== pokemonToDelete
-  //   );
-  //   localStorage.setItem("allPokemonsArray", pokemonsAfterDelete);
-  //   console.log(fetchedPokemonsArray);
-  // };
+  const handleDeletOnClick = (pokemonToDelete: DetailedPokemon) => {
+    const pokemonsAfterDelete = pokemonsFromLocal.filter(
+      (pokemon: DetailedPokemon) => pokemon !== pokemonToDelete
+    );
+    localStorage.setItem(
+      "allPokemonsArray",
+      JSON.stringify(pokemonsAfterDelete)
+    );
+  };
 
   const handleFirstPageButtonOnClick = () => {
     setCurrentPage(1);
@@ -80,32 +81,32 @@ const Home = () => {
 
   useEffect(() => {
     handleFetchLocalPokemons();
-    setMaxPageNumber(Math.ceil(pokemonsFromLocal?.length / 6));
   }, []);
 
   useEffect(() => {
+    setMaxPageNumber(Math.ceil(pokemonsFromLocal?.length / 6));
     handlePokemonsPagination();
   }, [pokemonsFromLocal, currentPage]);
-
-  console.log(pokemonsFromLocal.length);
 
   return (
     <>
       <input type="text" name="search" onChange={handleSearchOnChange} />
       <main className={styles.container}>
         <div className={styles.cardsContainer}>
-          {shownPokemons?.map((shownPokemon) => {
-            const id = `00${shownPokemon.id}`.slice(-3);
-            return (
-              <Link
-                key={shownPokemon.id}
-                className={styles.link}
-                href={`/pokemon/${shownPokemon.name}`}
-              >
-                <Card id={id} pokemon={shownPokemon} />
-              </Link>
-            );
-          })}
+          {shownPokemons
+            ?.sort((a, b) => a.id - b.id)
+            .map((shownPokemon) => {
+              return (
+                <Link
+                  key={shownPokemon.id}
+                  className={styles.link}
+                  href={`/pokemon/${shownPokemon.id}`}
+                  draggable={false}
+                >
+                  <Card pokemon={shownPokemon} />
+                </Link>
+              );
+            })}
         </div>
         <div className={styles.paginationButtonContainer}>
           <button

@@ -1,13 +1,18 @@
-import React from "react";
-
+import { MouseEvent } from "react";
 const MainButton = ({
   text,
   handleClick,
+  isSubmit,
 }: {
   text: string;
-  handleClick: Function;
+  isSubmit: Boolean;
+  handleClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }) => {
-  return <button onClick={() => handleClick}>{text}</button>;
+  return (
+    <button type={isSubmit ? "submit" : "button"} onClick={handleClick}>
+      {text}
+    </button>
+  );
 };
 
 export default MainButton;

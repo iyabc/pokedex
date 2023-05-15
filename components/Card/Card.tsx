@@ -4,15 +4,15 @@ import Pill from "../Pill/Pill";
 import Image from "next/image";
 import Link from "next/link";
 
-const Card = ({ id, pokemon }: { id: string; pokemon: BasicPokemon }) => {
+const Card = ({ pokemon }: { pokemon: DetailedPokemon }) => {
   return (
     <div className={styles.card}>
       <div className={styles.cardInner}>
         <div className={styles.cardHeader}>
           <div className={styles.imageWrapper}>
             <Image
-              src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id}.png`}
-              alt={`pokemon.name`}
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+              alt={pokemon.name}
               width={150}
               height={50}
               loading="lazy"
@@ -26,7 +26,7 @@ const Card = ({ id, pokemon }: { id: string; pokemon: BasicPokemon }) => {
         </div>
         <div className={styles.cardBody}>
           <div className={styles.cardTypesContainer}>
-            {pokemon.types?.map((type: Type) => {
+            {pokemon.details.types?.map((type: Type) => {
               if (type.name !== "none") {
                 return <Pill key={type.name} text={type.name} isType={true} />;
               }

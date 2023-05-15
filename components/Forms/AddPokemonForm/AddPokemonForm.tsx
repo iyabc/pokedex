@@ -1,5 +1,5 @@
 import { FormEventHandler, ChangeEventHandler } from "react";
-import styles from "./AddPokemonForm.module.css";
+import styles from "../Form.module.css";
 
 const AddPokemonForm = ({
   types,
@@ -59,30 +59,27 @@ const AddPokemonForm = ({
 
   return (
     <form className={styles.form} onSubmit={handleOnSubmit}>
-      <div className={styles.formGroup}>
+      <div className={styles.form_group}>
         <label htmlFor="name">Name</label>
         <input
-          className={styles.input}
           name="name"
           id="name"
           type="text"
           onChange={handleNameOnChange}
         />
       </div>
-      <div className={styles.formGroup}>
+      <div className={styles.form_group}>
         <label htmlFor="name">Weight</label>
         <input
-          className={styles.input}
           name="weight"
           id="weight"
           type="number"
           onChange={handleWeightOnChange}
         />
       </div>
-      <div className={styles.formGroup}>
+      <div className={styles.form_group}>
         <label htmlFor="name">Height</label>
         <input
-          className={styles.input}
           name="height"
           id="height"
           type="number"
@@ -90,7 +87,7 @@ const AddPokemonForm = ({
         />
       </div>
       {/* might be moved to a diff component */}
-      <div className={styles.formGroup}>
+      <div className={styles.form_group}>
         <label htmlFor="name">Types</label>
         <select
           name="firstType"
@@ -124,7 +121,7 @@ const AddPokemonForm = ({
         </select>
       </div>
       {/* might be moved to a diff component */}
-      <div className={styles.formGroup}>
+      <div className={styles.form_group}>
         <label htmlFor="name">Abilities</label>
         <select
           name="firstAbility"
@@ -157,7 +154,7 @@ const AddPokemonForm = ({
           <option value="none">none</option>
         </select>
       </div>
-      <div className={styles.formGroup}>
+      <div className={styles.form_group}>
         {stats?.map((stat) => {
           const convertedStatName = stat.name.replace(
             /-([a-z])/g,

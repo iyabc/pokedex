@@ -6,7 +6,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ["assets.pokemon.com"],
+    domains: ["raw.githubusercontent.com"],
   },
 };
 

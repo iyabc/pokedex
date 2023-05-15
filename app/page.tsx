@@ -5,8 +5,9 @@ import { fetchAllPokemonsFromApi } from "./api/api_to_local";
 
 const Page = () => {
   useEffect(() => {
-    const allPokemonsArray = localStorage.getItem("allPokemonsArray");
-    if (!allPokemonsArray) {
+    const allPokemonsString = localStorage.getItem("allPokemonsArray");
+    if (!allPokemonsString) {
+      console.log("fetch");
       fetchAllPokemonsFromApi();
     }
   }, []);
