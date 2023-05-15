@@ -3,6 +3,7 @@ import styles from "./Card.module.css";
 import Pill from "../Pill/Pill";
 import Image from "next/image";
 import Link from "next/link";
+import { MouseEvent } from "react";
 
 const Card = ({ pokemon }: { pokemon: DetailedPokemon }) => {
   return (

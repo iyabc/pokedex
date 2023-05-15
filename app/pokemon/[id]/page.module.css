@@ -59,6 +59,12 @@
   gap: 1rem;
 }
 
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .boxes_container {
   width: 100%;
   display: flex;

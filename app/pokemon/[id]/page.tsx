@@ -1,11 +1,14 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import Pill from "@/components/Pill/Pill";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Page = ({ params }: { params: { id: number } }) => {
+  const { push } = useRouter();
+  const [pokemons, setPokemons] = useState<DetailedPokemon[]>([]);
   const [pokemon, setPokemon] = useState<DetailedPokemon>({
     id: 0,
     name: "",
@@ -25,6 +28,17 @@ const Page = ({ params }: { params: { id: number } }) => {
     },
   });
 
+  const handleDeletOnClick = (e: MouseEvent<HTMLButtonElement>) => {
+    const pokemonsAfterDelete = pokemons.filter(
+      (localPokemon: DetailedPokemon) => localPokemon.id !== pokemon.id
+    );
+    localStorage.setItem(
+      "allPokemonsArray",
+      JSON.stringify(pokemonsAfterDelete)
+    );
+    push("/");
+  };
+
   useEffect(() => {
     const pokemonsArrayString = localStorage.getItem("allPokemonsArray");
     const pokemonsArray = pokemonsArrayString
@@ -33,7 +47,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     const detailedPokemon = pokemonsArray?.find(
       (pokemon: DetailedPokemon) => pokemon.id === Number(params.id)
     );
-    console.log(params.id);
+    setPokemons(pokemonsArray);
     setPokemon(detailedPokemon);
   }, []);
 
@@ -51,20 +65,36 @@ const Page = ({ params }: { params: { id: number } }) => {
         <Link href="/" className={styles.back_arrow}>
           &larr;
         </Link>
-        <Link href={`/edit/${params.id}`} className={styles.icon_wrapper}>
-          <Image
-            className={styles.icon}
-            src="/icons/edit_icon.svg"
-            alt="Edit Icon"
-            width={24}
-            height={24}
-            loading="lazy"
-            draggable={false}
-            {...{
-              layout: "intrinsic",
-            }}
-          />
-        </Link>
+        <div>
+          <button className={styles.icon_wrapper} onClick={handleDeletOnClick}>
+            <Image
+              className={styles.icon}
+              src="/icons/delete_icon.svg"
+              alt="Delete Icon"
+              width={24}
+              height={24}
+              loading="lazy"
+              draggable={false}
+              {...{
+                layout: "intrinsic",
+              }}
+            />
+          </button>
+          <Link href={`/edit/${params.id}`} className={styles.icon_wrapper}>
+            <Image
+              className={styles.icon}
+              src="/icons/edit_icon.svg"
+              alt="Edit Icon"
+              width={24}
+              height={24}
+              loading="lazy"
+              draggable={false}
+              {...{
+                layout: "intrinsic",
+              }}
+            />
+          </Link>
+        </div>
       </div>
       <div className={styles.container__inner}>
         <div className={styles.container__inner_header}>

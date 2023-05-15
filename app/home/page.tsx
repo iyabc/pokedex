@@ -31,16 +31,6 @@ const Home = () => {
     setShownPokemons(slicedPokemons);
   };
 
-  const handleDeletOnClick = (pokemonToDelete: DetailedPokemon) => {
-    const pokemonsAfterDelete = pokemonsFromLocal.filter(
-      (pokemon: DetailedPokemon) => pokemon !== pokemonToDelete
-    );
-    localStorage.setItem(
-      "allPokemonsArray",
-      JSON.stringify(pokemonsAfterDelete)
-    );
-  };
-
   const handleFirstPageButtonOnClick = () => {
     setCurrentPage(1);
   };
