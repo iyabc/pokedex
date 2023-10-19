@@ -14,12 +14,8 @@ import Link from "next/link";
 import { fetchPokemonPagination } from "../api/api_to_local";
 
 const Home = () => {
-  const [pokemonsFromLocal, setPokemonsFromLocal] = useState<DetailedPokemon[]>(
-    []
-  );
-  const [shownPokemons, setShownPokemons] = useState<
-    DetailedPokemon[] | undefined
-  >([]);
+  const [pokemonsFromLocal, setPokemonsFromLocal] = useState<DetailedPokemon[]>([]);
+  const [shownPokemons, setShownPokemons] = useState<DetailedPokemon[] | undefined>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxPageNumber, setMaxPageNumber] = useState<number>(0);
 
@@ -49,9 +45,7 @@ const Home = () => {
 
   const handleSearchOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value.toLowerCase();
-    const filteredPokemons = pokemonsFromLocal.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(searchValue)
-    );
+    const filteredPokemons = pokemonsFromLocal.filter((pokemon) => pokemon.name.toLowerCase().includes(searchValue));
     if (filteredPokemons.length > 0) {
       setShownPokemons(filteredPokemons);
       setMaxPageNumber(Math.ceil(filteredPokemons?.length / 6));
@@ -63,9 +57,7 @@ const Home = () => {
 
   const handleFetchLocalPokemons = () => {
     const fetchedLocalPokemonsString = localStorage.getItem("allPokemonsArray");
-    const fetchedPokemonsArray = fetchedLocalPokemonsString
-      ? JSON.parse(fetchedLocalPokemonsString)
-      : null;
+    const fetchedPokemonsArray = fetchedLocalPokemonsString ? JSON.parse(fetchedLocalPokemonsString) : null;
     setPokemonsFromLocal(fetchedPokemonsArray);
   };
 
@@ -76,11 +68,17 @@ const Home = () => {
   useEffect(() => {
     setMaxPageNumber(Math.ceil(pokemonsFromLocal?.length / 6));
     handlePokemonsPagination();
-  }, [pokemonsFromLocal, currentPage]);
+  }, [pokemonsFromLocal, currentPage, handlePokemonsPagination]);
 
   return (
     <>
-      <input type="text" name="search" onChange={handleSearchOnChange} />
+      <div className={styles.container}>
+        <input
+          type="text"
+          name="search"
+          onChange={handleSearchOnChange}
+        />
+      </div>
       <main className={styles.container}>
         <div className={styles.cardsContainer}>
           {shownPokemons
@@ -91,8 +89,7 @@ const Home = () => {
                   key={shownPokemon.id}
                   className={styles.link}
                   href={`/pokemon/${shownPokemon.id}`}
-                  draggable={false}
-                >
+                  draggable={false}>
                   <Card pokemon={shownPokemon} />
                 </Link>
               );
@@ -102,15 +99,13 @@ const Home = () => {
           <button
             title="First Page"
             onClick={handleFirstPageButtonOnClick}
-            disabled={currentPage === 1}
-          >
+            disabled={currentPage === 1}>
             first
           </button>
           <button
             title="Previous Page"
             onClick={handlePreviousPageButtonOnClick}
-            disabled={currentPage === 1}
-          >
+            disabled={currentPage === 1}>
             perv
           </button>
           <input
@@ -124,21 +119,24 @@ const Home = () => {
           <button
             title="Next Page"
             onClick={handleNextPageButtonOnClick}
-            disabled={currentPage === maxPageNumber}
-          >
+            disabled={currentPage === maxPageNumber}>
             next
           </button>
           <button
             title="Last Page"
             onClick={handleLastPageButtonOnClick}
-            disabled={currentPage === maxPageNumber}
-          >
+            disabled={currentPage === maxPageNumber}>
             last
           </button>
         </div>
       </main>
-      <Link href="/add" className={styles.addButtonContainer}>
-        <CircleButton text="+" color="green" />
+      <Link
+        href="/add"
+        className={styles.addButtonContainer}>
+        <CircleButton
+          text="+"
+          color="green"
+        />
       </Link>
     </>
   );
